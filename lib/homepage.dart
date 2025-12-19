@@ -1,8 +1,15 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shoptrpl3b/GridDress.dart';
 import 'dart:convert';
+
+import 'package:shoptrpl3b/GridElectronic.dart';
+import 'package:shoptrpl3b/GridSepatuCewek.dart';
+import 'package:shoptrpl3b/GridSepatuCowok.dart';
+import 'package:shoptrpl3b/GridTshirt.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,7 +23,7 @@ class _HomePageState extends State<HomePage> {
   PageController bannerController = PageController();
   Timer? bannerTimer;
   int indexBanner = 0;
-  List<dynamic> allproductitem = [];
+  List<dynamic> allProductList = [];
 
   @override
   void initState() {
@@ -27,6 +34,20 @@ class _HomePageState extends State<HomePage> {
       });
     });
     bannerOnBoarding();
+  }
+
+  Future<void> getProductItem() async {
+    String urlProductItem = "http://localhost/servershop/allproductitem.php";
+    try {
+      var response = await http.get(Uri.parse(urlProductItem));
+      setState(() {
+        allProductList = jsonDecode(response.body);
+      });
+    } catch (exc) {
+      if (kDebugMode) {
+        print(exc);
+      }
+    }
   }
 
   void bannerOnBoarding() {
@@ -100,7 +121,7 @@ class _HomePageState extends State<HomePage> {
                   widthFactor: 1.0,
                   heightFactor: 1.0,
                   child: Icon(
-                    Icons.search_outlined,
+                    Icons.filter_list,
                     color: Colors.red,
                   ),
                 ),
@@ -108,7 +129,7 @@ class _HomePageState extends State<HomePage> {
                   widthFactor: 1.0,
                   heightFactor: 1.0,
                   child: Icon(
-                    Icons.filter_list,
+                    Icons.search_rounded,
                     color: Colors.red,
                   ),
                 ),
@@ -147,6 +168,13 @@ class _HomePageState extends State<HomePage> {
                     Card(
                       elevation: 5,
                       child: InkWell(
+                        onTap: () {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => const GridElectronic(),
+                            ),
+                          );
+                        },
                         child: SizedBox(
                           height: 80,
                           width: 60,
@@ -170,6 +198,13 @@ class _HomePageState extends State<HomePage> {
                     Card(
                       elevation: 5,
                       child: InkWell(
+                        onTap: () {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => const GridSepatuCewek(),
+                            ),
+                          );
+                        },
                         child: SizedBox(
                           height: 80,
                           width: 60,
@@ -194,6 +229,13 @@ class _HomePageState extends State<HomePage> {
                     Card(
                       elevation: 5,
                       child: InkWell(
+                        onTap: () {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => const GridSepatuCowok(),
+                            ),
+                          );
+                        },
                         child: SizedBox(
                           height: 80,
                           width: 60,
@@ -218,6 +260,13 @@ class _HomePageState extends State<HomePage> {
                     Card(
                       elevation: 5,
                       child: InkWell(
+                        onTap: () {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => const GridTshirt(),
+                            ),
+                          );
+                        },
                         child: SizedBox(
                           height: 80,
                           width: 60,
@@ -241,6 +290,13 @@ class _HomePageState extends State<HomePage> {
                     Card(
                       elevation: 5,
                       child: InkWell(
+                        onTap: () {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => const GridDress(),
+                            ),
+                          );
+                        },
                         child: SizedBox(
                           height: 80,
                           width: 60,
@@ -263,6 +319,42 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ],
                 ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(5),
+              child: Column(
+                children: <Widget>[
+                  Text(
+                    'Our Product List',
+                    style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black),
+                  ),
+                  SizedBox(height: 5),
+                  if (allProductList.isEmpty) ...[
+                    Center(
+                      child: Text(
+                        style: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
+                      ),
+                    ),
+                  ] else ...[
+                    GridView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        gridDelegate: 
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                mainAxisSpacing: 5,
+                                crossAxisSpacing: 5),
+                        itemCount: allProductList.length,
+                        itemBuilder: (context, index)){}
+                  ]
+                ],
               ),
             ),
           ],
