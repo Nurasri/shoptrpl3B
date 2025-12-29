@@ -68,6 +68,7 @@ flutter:
     - lib/images/sepatucowok.png
     - lib/images/t-shirt.png
     - lib/images/dress.png
+    - lib/images/spCart.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

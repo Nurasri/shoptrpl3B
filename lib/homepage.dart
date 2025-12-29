@@ -10,6 +10,8 @@ import 'package:shoptrpl3b/GridElectronic.dart';
 import 'package:shoptrpl3b/GridSepatuCewek.dart';
 import 'package:shoptrpl3b/GridSepatuCowok.dart';
 import 'package:shoptrpl3b/GridTshirt.dart';
+import 'package:shoptrpl3b/onboarding.dart';
+import 'package:shoptrpl3b/splashscreen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -325,35 +327,60 @@ class _HomePageState extends State<HomePage> {
               padding: EdgeInsets.all(5),
               child: Column(
                 children: <Widget>[
-                  Text(
+                  const Text(
                     'Our Product List',
                     style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.bold,
                         color: Colors.black),
                   ),
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   if (allProductList.isEmpty) ...[
-                    Center(
-                      child: Text(
-                        style: TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black),
-                      ),
+                    const Center(
+                      child: Text("Product Not Found"),
                     ),
                   ] else ...[
                     GridView.builder(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        gridDelegate: 
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                mainAxisSpacing: 5,
-                                crossAxisSpacing: 5),
-                        itemCount: allProductList.length,
-                        itemBuilder: (context, index)){}
-                  ]
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 5,
+                              crossAxisSpacing: 5),
+                      itemCount: allProductList.length,
+                      itemBuilder: (context, index) {
+                        final productItem = allProductList[index];
+                        return GestureDetector(
+                          onTap: () {},
+                          child: Card(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Image.network(
+                                  productItem['images'],
+                                  height: 125,
+                                  width: 165,
+                                  fit: BoxFit.cover,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: Text(
+                                    productItem['name'],
+                                    maxLines: 1,
+                                    style: const TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
                 ],
               ),
             ),
